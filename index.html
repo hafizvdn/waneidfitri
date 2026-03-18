@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kad Imbasan Selamat Hari Raya | Wan Advertising</title>
     <style>
-        /* Import fon yang elegan dan menarik */
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,700&family=Poppins:wght@300;400;600&display=swap');
 
         body {
@@ -14,33 +13,74 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f1ea;
+            /* Latar belakang bertukar ke hijau gelap eksklusif */
+            background: radial-gradient(circle at center, #1a3c34 0%, #061c16 100%);
             font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Elakkan scrollbar dari bintang */
         }
 
-        /* Container untuk menetapkan perspektif 3D */
+        /* --- Animasi Bintang Latar Belakang --- */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px #fff; }
+        }
+
+        /* --- Animasi Pelita Gantung --- */
+        .lanterns {
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 40px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .lantern {
+            font-size: 2.5rem;
+            transform-origin: top center;
+            animation: sway 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.6));
+        }
+        .lantern:nth-child(2) { animation-duration: 4s; animation-delay: 1s; }
+        @keyframes sway {
+            0% { transform: rotate(-8deg); }
+            100% { transform: rotate(8deg); }
+        }
+
         .card-container {
             perspective: 1000px;
             cursor: pointer;
+            z-index: 1;
         }
 
-        /* Tetapan kad utama */
         .card {
-            width: 350px;
-            height: 450px;
+            width: 360px;
+            height: 500px;
             position: relative;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.2);
             border-radius: 20px;
         }
 
-        /* Kelas yang akan diaktifkan melalui JavaScript */
         .card.is-flipped {
             transform: rotateY(180deg);
         }
 
-        /* Gaya umum untuk bahagian Depan dan Belakang */
         .card-face {
             position: absolute;
             width: 100%;
@@ -52,102 +92,125 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 2.5rem;
             box-sizing: border-box;
-            border: 4px solid #d4af37; /* Border emas */
+            background: linear-gradient(135deg, #0d4231 0%, #05241a 100%);
+            border: 2px solid #d4af37;
         }
 
-        /* Bahagian Depan kad */
-        .card-front {
-            background: linear-gradient(135deg, #0f4c3a 0%, #062e22 100%);
-            color: #d4af37; /* Teks emas */
+        /* Bingkai putus-putus dalam kad */
+        .card-face::before {
+            content: '';
+            position: absolute;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 1px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        /* Kesan Teks Emas Foil */
+        .gold-text {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Playfair Display', serif;
         }
 
         .card-front h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin: 0;
             line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Sedikit bayang untuk timbulkan teks */
         }
 
         .card-front p {
-            font-size: 1rem;
-            color: #e0d0a6;
+            font-size: 1.1rem;
+            color: #fcf6ba;
             margin-top: 15px;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             text-transform: uppercase;
+            font-weight: 300;
         }
 
         .icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+            font-size: 5rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
         }
 
-        /* Bahagian Belakang kad */
         .card-back {
-            background: linear-gradient(135deg, #155d47 0%, #0b3d2e 100%);
-            color: #fff;
             transform: rotateY(180deg);
         }
 
         .card-back h2 {
-            font-family: 'Playfair Display', serif;
-            color: #d4af37;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin-bottom: 15px;
         }
 
         .card-back p.message {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 1.05rem;
+            line-height: 1.7;
             margin-bottom: 30px;
-            color: #e8e8e8;
+            color: #e0d0a6;
+            font-weight: 300;
         }
 
         .card-back .company-name {
             margin-top: auto;
             font-weight: 600;
-            color: #d4af37;
-            font-size: 1.2rem;
+            color: #fcf6ba;
+            font-size: 1.3rem;
             border-top: 1px solid rgba(212, 175, 55, 0.3);
             padding-top: 15px;
             width: 100%;
+            letter-spacing: 1px;
         }
 
         .hint {
             position: absolute;
-            bottom: 15px;
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.5);
+            bottom: 25px;
+            font-size: 0.85rem;
+            color: #d4af37;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+            0% { opacity: 0.4; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.4; transform: scale(0.95); }
         }
     </style>
 </head>
 <body>
 
+    <div class="stars" id="starContainer"></div>
+
     <div class="card-container" onclick="flipCard()">
+        
+        <div class="lanterns">
+            <div class="lantern">🏮</div>
+            <div class="lantern">🏮</div>
+        </div>
+
         <div class="card" id="rayaCard">
             <div class="card-face card-front">
-                <div class="icon">🌙✨</div>
-                <h1>Selamat<br>Hari Raya</h1>
+                <div class="icon">🌙</div>
+                <h1 class="gold-text">Selamat<br>Hari Raya</h1>
                 <p>Aidilfitri</p>
-                <div class="hint">Klik untuk pusing</div>
+                <div class="hint">Klik untuk buka surat</div>
             </div>
 
             <div class="card-face card-back">
-                <h2>Maaf Zahir & Batin</h2>
+                <h2 class="gold-text">Maaf Zahir & Batin</h2>
                 <p class="message">
-                    Selamat menyambut Hari Raya yang penuh keceriaan dan keberkatan. Semoga musim perayaan ini membawa kedamaian, kemakmuran, dan kebahagiaan kepada anda dan keluarga.
+                    Dengan ingatan tulus ikhlas, semoga lembaran Syawal ini membawa cahaya kedamaian, kemakmuran, dan kebahagiaan buat anda dan keluarga tercinta.
                 </p>
                 <div class="company-name">
-                    Salam mesra,<br>
+                    Ikhlas daripada,<br>
                     Wan Advertising
                 </div>
             </div>
@@ -155,11 +218,40 @@
     </div>
 
     <script>
-        // JavaScript untuk mengawal animasi pusingan (flip)
+        // Fungsi untuk pusing kad
         function flipCard() {
             const card = document.getElementById('rayaCard');
             card.classList.toggle('is-flipped');
         }
+
+        // Fungsi menjana bintang secara rawak di latar belakang
+        function createStars() {
+            const container = document.getElementById('starContainer');
+            const starCount = 50; // Jumlah bintang
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Saiz rawak
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // Kedudukan rawak
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // Kelajuan kelipan rawak
+                star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+                star.style.animationDelay = (Math.random() * 2) + 's';
+                
+                container.appendChild(star);
+            }
+        }
+
+        // Jalankan fungsi bintang bila halaman dimuat
+        window.onload = createStars;
     </script>
 
 </body>
