@@ -567,10 +567,234 @@
 
     </div>
 
+    <!-- ===== QUIZ SECTION ===== -->
+    <div class="quiz-wrapper" id="quizSection">
+        <div class="section-divider" style="margin-bottom:40px;">
+            <div class="line"></div>
+            <div class="ornament">🧠</div>
+            <div class="line"></div>
+        </div>
+        <h2 class="section-title gold-text" style="margin-bottom:6px;">Kuiz Syawal</h2>
+        <p class="quiz-subtitle">Uji Pengetahuan Anda tentang Syawal!</p>
+
+        <!-- PROGRESS BAR -->
+        <div class="quiz-progress-wrap">
+            <div class="quiz-progress-bar" id="quizProgressBar"></div>
+        </div>
+        <div class="quiz-progress-label" id="quizProgressLabel">Soalan 1 / 8</div>
+
+        <!-- QUIZ CARD -->
+        <div class="quiz-card" id="quizCard">
+            <div class="quiz-q-num" id="quizQNum">Soalan 1</div>
+            <div class="quiz-question" id="quizQuestion"></div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="quiz-feedback" id="quizFeedback"></div>
+            <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()" style="display:none;">
+                Seterusnya →
+            </button>
+        </div>
+
+        <!-- RESULT SCREEN (hidden initially) -->
+        <div class="quiz-result" id="quizResult" style="display:none;">
+            <div class="result-icon" id="resultIcon"></div>
+            <h3 class="result-title gold-text" id="resultTitle"></h3>
+            <p class="result-score" id="resultScore"></p>
+            <p class="result-msg" id="resultMsg"></p>
+            <button class="quiz-retry-btn" onclick="restartQuiz()">🔄 Cuba Semula</button>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <div class="footer">
         ✦ &nbsp; Selamat Hari Raya Aidilfitri &nbsp; ✦ &nbsp; <span>Wan Advertising</span> &nbsp; ✦
     </div>
+
+    <style>
+        /* ==================== QUIZ ==================== */
+        .quiz-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+        }
+        .quiz-subtitle {
+            text-align: center;
+            color: #9e8e66;
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+            letter-spacing: 1px;
+        }
+        .quiz-progress-wrap {
+            background: rgba(255,255,255,0.08);
+            border-radius: 99px;
+            height: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .quiz-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af37, #fcf6ba);
+            border-radius: 99px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        .quiz-progress-label {
+            text-align: right;
+            font-size: 0.78rem;
+            color: #9e8e66;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .quiz-card {
+            background: linear-gradient(145deg, rgba(13,66,49,0.9), rgba(5,36,26,0.98));
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 20px;
+            padding: 32px 28px 28px;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+        .quiz-q-num {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #d4af37;
+            margin-bottom: 14px;
+        }
+        .quiz-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: #fcf6ba;
+            line-height: 1.55;
+            margin-bottom: 24px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-opt-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212,175,55,0.25);
+            border-radius: 10px;
+            color: #c9b98a;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            padding: 12px 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .quiz-opt-btn:hover:not(:disabled) {
+            background: rgba(212,175,55,0.12);
+            border-color: rgba(212,175,55,0.6);
+            color: #fcf6ba;
+            transform: translateX(4px);
+        }
+        .quiz-opt-btn.correct {
+            background: rgba(34,139,80,0.3) !important;
+            border-color: #4caf74 !important;
+            color: #a8f0bc !important;
+        }
+        .quiz-opt-btn.wrong {
+            background: rgba(180,40,40,0.3) !important;
+            border-color: #e05555 !important;
+            color: #f0a8a8 !important;
+        }
+        .quiz-opt-btn .opt-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: rgba(212,175,55,0.15);
+            color: #d4af37;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .quiz-feedback {
+            margin-top: 16px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            min-height: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease, padding 0.3s;
+            padding: 0 14px;
+        }
+        .quiz-feedback.show {
+            max-height: 120px;
+            padding: 12px 14px;
+        }
+        .quiz-feedback.correct-fb {
+            background: rgba(34,139,80,0.15);
+            border-left: 3px solid #4caf74;
+            color: #a8f0bc;
+        }
+        .quiz-feedback.wrong-fb {
+            background: rgba(180,40,40,0.15);
+            border-left: 3px solid #e05555;
+            color: #f0a8a8;
+        }
+        .quiz-next-btn {
+            margin-top: 20px;
+            align-self: flex-end;
+            background: linear-gradient(135deg, #d4af37, #aa771c);
+            color: #061c16;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .quiz-next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212,175,55,0.4);
+        }
+
+        /* Result screen */
+        .quiz-result {
+            background: linear-gradient(145deg, rgba(13,66,49,0.9), rgba(5,36,26,0.98));
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 20px;
+            padding: 48px 28px;
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+        @keyframes fadeInUp {
+            from { opacity:0; transform:translateY(20px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .result-icon   { font-size:4rem; margin-bottom:16px; }
+        .result-title  { font-size:2rem; margin-bottom:12px; }
+        .result-score  { font-size:3rem; font-family:'Playfair Display',serif; color:#fcf6ba; margin-bottom:8px; }
+        .result-msg    { color:#9e8e66; font-size:0.9rem; line-height:1.6; max-width:420px; margin:0 auto 28px; }
+        .quiz-retry-btn {
+            background: linear-gradient(135deg,#d4af37,#aa771c);
+            color:#061c16;
+            border:none;
+            border-radius:10px;
+            padding:12px 30px;
+            font-family:'Poppins',sans-serif;
+            font-weight:600;
+            font-size:0.95rem;
+            cursor:pointer;
+            transition:transform 0.2s, box-shadow 0.2s;
+        }
+        .quiz-retry-btn:hover {
+            transform:translateY(-2px);
+            box-shadow:0 6px 20px rgba(212,175,55,0.4);
+        }
+    </style>
 
     <script>
         function flipCard() {
@@ -597,7 +821,171 @@
             }
         }
 
-        window.onload = createStars;
+        // ==================== QUIZ DATA ====================
+        const quizData = [
+            {
+                q: "Apakah maksud perkataan 'Syawal' dalam bahasa Arab?",
+                opts: ["Kegembiraan", "Peningkatan / Mengangkat", "Kemenangan", "Cahaya"],
+                ans: 1,
+                fb: "✅ Betul! 'Syawal' berasal dari kata 'syala' bermaksud mengangkat atau meningkat — simbolik kepada peningkatan diri selepas Ramadan."
+            },
+            {
+                q: "Pada bulan ke berapakah Syawal dalam kalendar Hijri?",
+                opts: ["Bulan ke-8", "Bulan ke-9", "Bulan ke-10", "Bulan ke-11"],
+                ans: 2,
+                fb: "✅ Tepat! Syawal ialah bulan ke-10 dalam kalendar Hijri, menyusul terus selepas Ramadan."
+            },
+            {
+                q: "Hukum apakah berpuasa pada 1 Syawal (hari Aidilfitri)?",
+                opts: ["Sunat", "Makruh", "Haram", "Wajib"],
+                ans: 2,
+                fb: "✅ Tepat sekali! Haram berpuasa pada 1 Syawal. Ia adalah hari kegembiraan yang Allah larang hambaNya berpuasa padanya."
+            },
+            {
+                q: "Berapa hari puasa sunat Syawal yang dituntut selepas Ramadan?",
+                opts: ["3 hari", "6 hari", "9 hari", "10 hari"],
+                ans: 1,
+                fb: "✅ Betul! Puasa 6 hari dalam bulan Syawal menyamai pahala berpuasa sepanjang tahun berdasarkan hadis Sahih Muslim."
+            },
+            {
+                q: "Apakah nama lain bagi Hari Raya Aidilfitri di Indonesia?",
+                opts: ["Eid Mubarak", "Lebaran / Idul Fitri", "Hari Raya Puasa", "Festa Fitri"],
+                ans: 1,
+                fb: "✅ Betul! Di Indonesia ia dikenali sebagai 'Lebaran' atau 'Idul Fitri', manakala di Arab Saudi disebut 'Eid al-Fitr'."
+            },
+            {
+                q: "Apakah amalan sunat yang digalakkan dilakukan sebelum solat Aidilfitri?",
+                opts: ["Berpuasa setengah hari", "Mandi sunat dan makan sebelum solat", "Membaca Yasin", "Solat tahajjud"],
+                ans: 1,
+                fb: "✅ Betul! Sunat mandi Aidilfitri dan makan terlebih dahulu (lazimnya kurma) sebelum pergi ke solat Aidilfitri."
+            },
+            {
+                q: "Tradisi 'duit raya' dalam sampul hijau paling sinonim dengan negara mana?",
+                opts: ["Arab Saudi & Mesir", "Turkey & Pakistan", "Malaysia, Singapura & Brunei", "Indonesia & Filipina"],
+                ans: 2,
+                fb: "✅ Tepat! Tradisi duit raya dalam sampul hijau adalah unik kepada Malaysia, Singapura dan Brunei — tidak diamalkan secara meluas di Timur Tengah."
+            },
+            {
+                q: "Apakah yang dilarang keras semasa perayaan Syawal walaupun dalam suasana gembira?",
+                opts: ["Memasak rendang", "Bermaaf-maafan", "Membazir dan melakukan kemaksiatan", "Ziarah jiran tetangga"],
+                ans: 2,
+                fb: "✅ Betul! Membazir, minum arak, dan melakukan kemaksiatan tetap haram walaupun di musim perayaan. 'Sesungguhnya pembazir adalah saudara syaitan.'"
+            }
+        ];
+
+        let currentQ = 0;
+        let score    = 0;
+        let answered = false;
+
+        function loadQuestion() {
+            const q = quizData[currentQ];
+            const labels = ['A', 'B', 'C', 'D'];
+
+            document.getElementById('quizQNum').textContent  = `Soalan ${currentQ + 1}`;
+            document.getElementById('quizQuestion').textContent = q.q;
+            document.getElementById('quizProgressLabel').textContent = `Soalan ${currentQ + 1} / ${quizData.length}`;
+            document.getElementById('quizProgressBar').style.width = ((currentQ) / quizData.length * 100) + '%';
+
+            const fb = document.getElementById('quizFeedback');
+            fb.textContent = '';
+            fb.className   = 'quiz-feedback';
+
+            document.getElementById('quizNextBtn').style.display = 'none';
+
+            const optContainer = document.getElementById('quizOptions');
+            optContainer.innerHTML = '';
+            answered = false;
+
+            q.opts.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerHTML = `<span class="opt-label">${labels[i]}</span>${opt}`;
+                btn.onclick = () => selectAnswer(i);
+                optContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(idx) {
+            if (answered) return;
+            answered = true;
+
+            const q    = quizData[currentQ];
+            const btns = document.querySelectorAll('.quiz-opt-btn');
+            const fb   = document.getElementById('quizFeedback');
+
+            btns.forEach(b => b.disabled = true);
+            btns[q.ans].classList.add('correct');
+
+            if (idx === q.ans) {
+                score++;
+                fb.textContent = q.fb;
+                fb.className   = 'quiz-feedback correct-fb show';
+            } else {
+                btns[idx].classList.add('wrong');
+                fb.textContent = `❌ Kurang tepat. ` + q.fb.replace('✅ Betul! ', '').replace('✅ Tepat! ', '').replace('✅ Tepat sekali! ', '');
+                fb.className   = 'quiz-feedback wrong-fb show';
+            }
+
+            const nextBtn = document.getElementById('quizNextBtn');
+            nextBtn.style.display = 'block';
+            nextBtn.textContent   = currentQ < quizData.length - 1 ? 'Seterusnya →' : 'Lihat Keputusan 🎉';
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < quizData.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quizCard').style.display     = 'none';
+            document.getElementById('quizProgressWrap')            // progress stays visible
+            document.getElementById('quizProgressBar').style.width = '100%';
+            document.getElementById('quizProgressLabel').textContent = `Selesai! ${quizData.length} / ${quizData.length}`;
+
+            const pct    = score / quizData.length;
+            let icon, title, msg;
+
+            if (pct === 1) {
+                icon  = '🏆';
+                title = 'Sempurna!';
+                msg   = 'Tahniah! Anda seorang yang sangat arif tentang Syawal. Semoga ilmu ini menjadi amalan yang bermanfaat dunia dan akhirat.';
+            } else if (pct >= 0.75) {
+                icon  = '🌟';
+                title = 'Cemerlang!';
+                msg   = 'Hampir sempurna! Pengetahuan anda tentang Syawal amat membanggakan. Cuba lagi untuk capai markah penuh!';
+            } else if (pct >= 0.5) {
+                icon  = '👍';
+                title = 'Bagus!';
+                msg   = 'Tidak mengapa, masih ada ruang untuk penambahbaikan. Baca semula bahagian di atas dan cuba lagi!';
+            } else {
+                icon  = '📚';
+                title = 'Teruskan Belajar!';
+                msg   = 'Jangan kecewa — ilmu perlu dicari. Semak semula maklumat di atas dan cuba jawab kuiz ini sekali lagi!';
+            }
+
+            document.getElementById('resultIcon').textContent  = icon;
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultScore').textContent = `${score} / ${quizData.length}`;
+            document.getElementById('resultMsg').textContent   = msg;
+            document.getElementById('quizResult').style.display = 'block';
+        }
+
+        function restartQuiz() {
+            currentQ = 0;
+            score    = 0;
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('quizCard').style.display   = 'flex';
+            loadQuestion();
+        }
+
+        window.onload = function() {
+            createStars();
+            loadQuestion();
+        };
     </script>
 
 </body>
