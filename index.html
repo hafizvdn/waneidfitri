@@ -7,21 +7,18 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,700&family=Poppins:wght@300;400;600&display=swap');
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            /* Latar belakang bertukar ke hijau gelap eksklusif */
-            background: radial-gradient(circle at center, #1a3c34 0%, #061c16 100%);
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Elakkan scrollbar dari bintang */
+            background: radial-gradient(circle at center, #1a3c34 0%, #061c16 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- Animasi Bintang Latar Belakang --- */
+        /* ==================== STARS ==================== */
         .stars {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             z-index: 0;
@@ -34,11 +31,21 @@
             animation: twinkle infinite alternate;
         }
         @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px #fff; }
+            0%   { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1;   transform: scale(1.2); box-shadow: 0 0 10px #fff; }
         }
 
-        /* --- Animasi Pelita Gantung --- */
+        /* ==================== CARD HERO SECTION ==================== */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
         .lanterns {
             position: absolute;
             top: -20px;
@@ -46,18 +53,17 @@
             display: flex;
             justify-content: space-around;
             padding: 0 40px;
-            box-sizing: border-box;
             z-index: 10;
         }
         .lantern {
             font-size: 2.5rem;
             transform-origin: top center;
             animation: sway 3s ease-in-out infinite alternate;
-            filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.6));
+            filter: drop-shadow(0 5px 15px rgba(212,175,55,0.6));
         }
         .lantern:nth-child(2) { animation-duration: 4s; animation-delay: 1s; }
         @keyframes sway {
-            0% { transform: rotate(-8deg); }
+            0%   { transform: rotate(-8deg); }
             100% { transform: rotate(8deg); }
         }
 
@@ -66,25 +72,20 @@
             cursor: pointer;
             z-index: 1;
         }
-
         .card {
             width: 360px;
             height: 500px;
             position: relative;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.8s cubic-bezier(0.175,0.885,0.32,1.275);
             transform-style: preserve-3d;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.2);
             border-radius: 20px;
         }
-
-        .card.is-flipped {
-            transform: rotateY(180deg);
-        }
+        .card.is-flipped { transform: rotateY(180deg); }
 
         .card-face {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             backface-visibility: hidden;
             border-radius: 20px;
             display: flex;
@@ -93,164 +94,509 @@
             align-items: center;
             text-align: center;
             padding: 2.5rem;
-            box-sizing: border-box;
             background: linear-gradient(135deg, #0d4231 0%, #05241a 100%);
             border: 2px solid #d4af37;
         }
-
-        /* Bingkai putus-putus dalam kad */
         .card-face::before {
             content: '';
             position: absolute;
-            top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border: 1px dashed rgba(212, 175, 55, 0.4);
+            top:12px; left:12px; right:12px; bottom:12px;
+            border: 1px dashed rgba(212,175,55,0.4);
             border-radius: 12px;
             pointer-events: none;
         }
 
-        /* Kesan Teks Emas Foil */
         .gold-text {
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            background: linear-gradient(to right,#bf953f,#fcf6ba,#b38728,#fbf5b7,#aa771c);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             font-family: 'Playfair Display', serif;
         }
-
-        .card-front h1 {
-            font-size: 2.8rem;
-            margin: 0;
-            line-height: 1.2;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Sedikit bayang untuk timbulkan teks */
-        }
-
-        .card-front p {
-            font-size: 1.1rem;
-            color: #fcf6ba;
-            margin-top: 15px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-weight: 300;
-        }
-
-        .icon {
-            font-size: 5rem;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
-        }
-
-        .card-back {
-            transform: rotateY(180deg);
-        }
-
-        .card-back h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-        }
-
-        .card-back p.message {
-            font-size: 1.05rem;
-            line-height: 1.7;
-            margin-bottom: 30px;
-            color: #e0d0a6;
-            font-weight: 300;
-        }
-
-        .card-back .company-name {
-            margin-top: auto;
-            font-weight: 600;
-            color: #fcf6ba;
-            font-size: 1.3rem;
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
-            padding-top: 15px;
-            width: 100%;
-            letter-spacing: 1px;
-        }
+        .card-front h1  { font-size:2.8rem; line-height:1.2; }
+        .card-front p   { font-size:1.1rem; color:#fcf6ba; margin-top:15px; letter-spacing:4px; text-transform:uppercase; font-weight:300; }
+        .icon           { font-size:5rem; margin-bottom:10px; filter:drop-shadow(0 0 20px rgba(212,175,55,0.8)); }
+        .card-back      { transform: rotateY(180deg); }
+        .card-back h2   { font-size:2rem; margin-bottom:15px; }
+        .card-back p.message { font-size:1.05rem; line-height:1.7; margin-bottom:30px; color:#e0d0a6; font-weight:300; }
+        .card-back .company-name { margin-top:auto; font-weight:600; color:#fcf6ba; font-size:1.3rem; border-top:1px solid rgba(212,175,55,0.3); padding-top:15px; width:100%; letter-spacing:1px; }
 
         .hint {
             position: absolute;
             bottom: 25px;
-            font-size: 0.85rem;
-            color: #d4af37;
+            font-size: 0.85rem; color:#d4af37;
             background: rgba(0,0,0,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding:5px 15px; border-radius:20px;
             animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.4; transform: scale(0.95); }
+            0%,100% { opacity:0.4; transform:scale(0.95); }
+            50%      { opacity:1;   transform:scale(1); }
         }
+
+        /* ==================== SCROLL CTA ==================== */
+        .scroll-cta {
+            margin-top: 32px;
+            color: #d4af37;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: bounce 2s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .scroll-cta span { display:block; text-align:center; font-size:1.4rem; }
+        @keyframes bounce {
+            0%,100% { transform:translateY(0); }
+            50%      { transform:translateY(8px); }
+        }
+
+        /* ==================== INFO SECTIONS ==================== */
+        .info-wrapper {
+            position: relative;
+            z-index: 1;
+            padding: 60px 20px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            margin-top: 70px;
+        }
+        .section-divider:first-child { margin-top: 0; }
+        .section-divider .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #d4af37, transparent);
+        }
+        .section-divider .ornament { font-size:1.6rem; filter:drop-shadow(0 0 8px rgba(212,175,55,0.8)); }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        /* --- 1 Syawal Cards --- */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .syawal-card {
+            background: linear-gradient(145deg, rgba(13,66,49,0.85), rgba(5,36,26,0.95));
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 16px;
+            padding: 22px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .syawal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 15px rgba(212,175,55,0.15);
+        }
+        .syawal-card .card-icon { font-size:2rem; flex-shrink:0; }
+        .syawal-card h3 { color:#fcf6ba; font-size:0.95rem; font-weight:600; margin-bottom:4px; }
+        .syawal-card p  { color:#b8a87e; font-size:0.85rem; line-height:1.55; font-weight:300; }
+
+        /* --- Fun Facts --- */
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .fact-bubble {
+            background: rgba(5,36,26,0.8);
+            border-left: 3px solid #d4af37;
+            border-radius: 0 12px 12px 0;
+            padding: 18px 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .fact-bubble:hover { transform: translateX(6px); }
+        .fact-bubble::before {
+            content: '★';
+            position: absolute;
+            right: 14px; top: 12px;
+            color: rgba(212,175,55,0.15);
+            font-size: 2.5rem;
+        }
+        .fact-bubble .fact-num {
+            font-family:'Playfair Display',serif;
+            font-size:2rem;
+            color:rgba(212,175,55,0.25);
+            line-height:1;
+            margin-bottom:6px;
+        }
+        .fact-bubble p { color:#c9b98a; font-size:0.88rem; line-height:1.6; font-weight:300; }
+        .fact-bubble strong { color:#fcf6ba; font-weight:600; }
+
+        /* --- Amalan digalakkan --- */
+        .amal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .amal-item {
+            background: linear-gradient(90deg, rgba(13,66,49,0.9) 0%, rgba(5,36,26,0.7) 100%);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s;
+        }
+        .amal-item:hover {
+            border-color: rgba(212,175,55,0.6);
+            background: linear-gradient(90deg, rgba(20,80,58,0.95) 0%, rgba(8,40,28,0.8) 100%);
+        }
+        .amal-item .badge {
+            background: linear-gradient(135deg,#d4af37,#aa771c);
+            color:#061c16;
+            font-weight:700;
+            font-size:0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        .amal-item .amal-icon { font-size:1.6rem; flex-shrink:0; }
+        .amal-item div h3  { color:#fcf6ba; font-size:0.95rem; font-weight:600; margin-bottom:2px; }
+        .amal-item div p   { color:#9e8e66; font-size:0.82rem; font-weight:300; line-height:1.4; }
+
+        /* --- Amalan Dilarang --- */
+        .larang-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .larang-card {
+            background: linear-gradient(145deg, rgba(60,10,10,0.7), rgba(30,5,5,0.9));
+            border: 1px solid rgba(220,80,80,0.3);
+            border-radius: 16px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .larang-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 15px rgba(220,80,80,0.15);
+        }
+        .larang-card .l-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .larang-card .l-icon { font-size:1.8rem; }
+        .larang-card h3  { color:#f09090; font-size:0.95rem; font-weight:600; }
+        .larang-card p   { color:#a07070; font-size:0.83rem; line-height:1.55; font-weight:300; }
+        .forbidden-badge {
+            display:inline-block;
+            background:rgba(220,50,50,0.2);
+            border:1px solid rgba(220,50,50,0.4);
+            color:#f09090;
+            font-size:0.72rem;
+            padding:2px 8px;
+            border-radius:20px;
+            margin-bottom:8px;
+            letter-spacing:1px;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px 20px 50px;
+            color: rgba(212,175,55,0.4);
+            font-size: 0.8rem;
+            letter-spacing:2px;
+        }
+        .footer span { color: rgba(212,175,55,0.7); }
     </style>
 </head>
 <body>
 
     <div class="stars" id="starContainer"></div>
 
-    <div class="card-container" onclick="flipCard()">
-        
-        <div class="lanterns">
-            <div class="lantern">🏮</div>
-            <div class="lantern">🏮</div>
-        </div>
-
-        <div class="card" id="rayaCard">
-            <div class="card-face card-front">
-                <div class="icon">🌙</div>
-                <h1 class="gold-text">Selamat<br>Hari Raya</h1>
-                <p>Aidilfitri</p>
-                <div class="hint">Klik untuk buka surat</div>
+    <!-- ===== HERO / KAD ===== -->
+    <section class="hero">
+        <div class="card-container" onclick="flipCard()">
+            <div class="lanterns">
+                <div class="lantern">🏮</div>
+                <div class="lantern">🏮</div>
             </div>
-
-            <div class="card-face card-back">
-                <h2 class="gold-text">Maaf Zahir & Batin</h2>
-                <p class="message">
-                    Dengan ingatan tulus ikhlas, semoga lembaran Syawal ini membawa cahaya kedamaian, kemakmuran, dan kebahagiaan buat anda dan keluarga tercinta.
-                </p>
-                <div class="company-name">
-                    Ikhlas daripada,<br>
-                    Wan Advertising
+            <div class="card" id="rayaCard">
+                <div class="card-face card-front">
+                    <div class="icon">🌙</div>
+                    <h1 class="gold-text">Selamat<br>Hari Raya</h1>
+                    <p>Aidilfitri</p>
+                    <div class="hint">Klik untuk buka surat</div>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="gold-text">Maaf Zahir & Batin</h2>
+                    <p class="message">
+                        Dengan ingatan tulus ikhlas, semoga lembaran Syawal ini membawa cahaya kedamaian, kemakmuran, dan kebahagiaan buat anda dan keluarga tercinta.
+                    </p>
+                    <div class="company-name">
+                        Ikhlas daripada,<br>
+                        Wan Advertising
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="scroll-cta" onclick="scrollToInfo()">
+            Ketahui Lebih Lanjut
+            <span>↓</span>
+        </div>
+    </section>
+
+    <!-- ===== INFO SECTIONS ===== -->
+    <div class="info-wrapper" id="infoSection">
+
+        <!-- 1. APA BUAT PADA 1 SYAWAL -->
+        <div class="section-divider">
+            <div class="line"></div>
+            <div class="ornament">🌙</div>
+            <div class="line"></div>
+        </div>
+        <h2 class="section-title gold-text">Apa Buat pada 1 Syawal?</h2>
+        <div class="grid-3">
+            <div class="syawal-card">
+                <div class="card-icon">🛁</div>
+                <div>
+                    <h3>Mandi Sunat Aidilfitri</h3>
+                    <p>Mandi sebelum solat Aidilfitri adalah sunat. Disyorkan dilakukan selepas Subuh sebelum pergi ke tempat solat.</p>
+                </div>
+            </div>
+            <div class="syawal-card">
+                <div class="card-icon">🍬</div>
+                <div>
+                    <h3>Makan Sebelum Solat</h3>
+                    <p>Berbeza dengan Aidiladha, sunat makan dahulu sebelum solat Aidilfitri — lazimnya kurma atau makanan manis.</p>
+                </div>
+            </div>
+            <div class="syawal-card">
+                <div class="card-icon">🕌</div>
+                <div>
+                    <h3>Solat Sunat Aidilfitri</h3>
+                    <p>Solat 2 rakaat berjemaah di surau atau padang. Diikuti khutbah yang wajib didengar oleh jemaah.</p>
+                </div>
+            </div>
+            <div class="syawal-card">
+                <div class="card-icon">💰</div>
+                <div>
+                    <h3>Tunaikan Zakat Fitrah</h3>
+                    <p>Wajib ditunaikan sebelum solat Aidilfitri. Jika belum, tunaikan segera sebelum terlewat.</p>
+                </div>
+            </div>
+            <div class="syawal-card">
+                <div class="card-icon">🤲</div>
+                <div>
+                    <h3>Bertakbir & Bertahmid</h3>
+                    <p>Ucapkan "Allahu Akbar" dengan penuh khusyuk bermula malam 1 Syawal hingga sebelum solat Aidilfitri.</p>
+                </div>
+            </div>
+            <div class="syawal-card">
+                <div class="card-icon">👨‍👩‍👧‍👦</div>
+                <div>
+                    <h3>Ziarah & Silaturrahim</h3>
+                    <p>Kunjungi ibu bapa, saudara-mara dan jiran tetangga. Pohon maaf dan eratkan hubungan kekeluargaan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. FUN FACTS -->
+        <div class="section-divider">
+            <div class="line"></div>
+            <div class="ornament">✨</div>
+            <div class="line"></div>
+        </div>
+        <h2 class="section-title gold-text">Fun Facts tentang Syawal</h2>
+        <div class="facts-grid">
+            <div class="fact-bubble">
+                <div class="fact-num">01</div>
+                <p><strong>Syawal bererti "Peningkatan".</strong> Nama bulan ini berasal dari perkataan Arab <em>syala</em> yang membawa maksud mengangkat atau meningkatkan — simbolik kejayaan selepas sebulan berpuasa.</p>
+            </div>
+            <div class="fact-bubble">
+                <div class="fact-num">02</div>
+                <p><strong>Bulan ke-10 dalam kalendar Hijri.</strong> Syawal menyusul terus selepas Ramadan yang penuh keberkatan, menjadikannya bulan sambutan terbesar umat Islam.</p>
+            </div>
+            <div class="fact-bubble">
+                <div class="fact-num">03</div>
+                <p><strong>6 hari puasa = seumur hidup berpuasa.</strong> Puasa 6 hari dalam bulan Syawal digabungkan dengan puasa Ramadan menyamai pahala berpuasa sepanjang tahun (berdasarkan hadis Sahih Muslim).</p>
+            </div>
+            <div class="fact-bubble">
+                <div class="fact-num">04</div>
+                <p><strong>Malaysia antara penyambut terhebat.</strong> Malaysia menyambut Hari Raya selama <strong>dua minggu</strong> rasmi — lebih lama berbanding kebanyakan negara Muslim lain di dunia.</p>
+            </div>
+            <div class="fact-bubble">
+                <div class="fact-num">05</div>
+                <p><strong>"Raya" bukan hanya satu.</strong> Di Malaysia, ia disebut <em>Hari Raya Aidilfitri</em>. Di Indonesia dikenali sebagai <em>Lebaran</em> atau <em>Idul Fitri</em>. Di Arab Saudi ia disebut <em>Eid al-Fitr</em>.</p>
+            </div>
+            <div class="fact-bubble">
+                <div class="fact-num">06</div>
+                <p><strong>Tradisi "duit raya" unik Asia Tenggara.</strong> Amalan memberikan sampul duit raya (wang hijau) adalah tradisi yang sangat sinonim dengan Malaysia, Singapura dan Brunei — tidak diamalkan secara meluas di Timur Tengah.</p>
+            </div>
+        </div>
+
+        <!-- 3. AMALAN DIGALAKKAN -->
+        <div class="section-divider">
+            <div class="line"></div>
+            <div class="ornament">🌿</div>
+            <div class="line"></div>
+        </div>
+        <h2 class="section-title gold-text">Amalan Amat Digalakkan di Bulan Syawal</h2>
+        <div class="amal-list">
+            <div class="amal-item">
+                <div class="amal-icon">🌙</div>
+                <div style="flex:1">
+                    <h3>Puasa 6 Hari Syawal</h3>
+                    <p>Amalan yang paling dituntut — berpuasa mana-mana 6 hari dalam bulan Syawal selepas selesai qadha' Ramadan (jika ada). Pahala setara berpuasa setahun penuh.</p>
+                </div>
+                <div class="badge">Sangat Digalak</div>
+            </div>
+            <div class="amal-item">
+                <div class="amal-icon">🤝</div>
+                <div style="flex:1">
+                    <h3>Mengeratkan Silaturrahim</h3>
+                    <p>Ziarah-menziarahi, bermaaf-maafan, dan menghubungi sanak-saudara yang jauh. Rasulullah SAW sangat menggalakkan umatnya menjaga hubungan kekeluargaan.</p>
+                </div>
+                <div class="badge">Sunat Muakkad</div>
+            </div>
+            <div class="amal-item">
+                <div class="amal-icon">📖</div>
+                <div style="flex:1">
+                    <h3>Istiqamah Membaca Al-Quran</h3>
+                    <p>Jangan berhenti membaca Al-Quran selepas Ramadan. Teruskan bacaan harian sebagai lambang istiqamah dalam beribadah.</p>
+                </div>
+                <div class="badge">Digalakkan</div>
+            </div>
+            <div class="amal-item">
+                <div class="amal-icon">💸</div>
+                <div style="flex:1">
+                    <h3>Bersedekah & Memberi</h3>
+                    <p>Kongsi rezeki dengan mereka yang memerlukan — tetangga, anak yatim, dan golongan B40. Syawal adalah bulan kegembiraan yang harus dikongsi bersama.</p>
+                </div>
+                <div class="badge">Digalakkan</div>
+            </div>
+            <div class="amal-item">
+                <div class="amal-icon">🕐</div>
+                <div style="flex:1">
+                    <h3>Qadha' Puasa Ramadan</h3>
+                    <p>Bagi yang mempunyai hutang puasa, Syawal adalah masa terbaik untuk segera menggantikannya sebelum masuk Ramadan berikutnya.</p>
+                </div>
+                <div class="badge">Wajib (jika ada hutang)</div>
+            </div>
+            <div class="amal-item">
+                <div class="amal-icon">🤲</div>
+                <div style="flex:1">
+                    <h3>Perbanyak Zikir & Doa</h3>
+                    <p>Teruskan wirid, zikir pagi petang, selawat, dan doa yang menjadi amalan sepanjang Ramadan. Jangan biarkan lidah kering daripada mengingati Allah.</p>
+                </div>
+                <div class="badge">Digalakkan</div>
+            </div>
+        </div>
+
+        <!-- 4. AMALAN DILARANG -->
+        <div class="section-divider">
+            <div class="line"></div>
+            <div class="ornament">⚠️</div>
+            <div class="line"></div>
+        </div>
+        <h2 class="section-title" style="color:#f09090; font-family:'Playfair Display',serif;">Amalan yang Dilarang di Bulan Syawal</h2>
+        <div class="larang-grid">
+            <div class="larang-card">
+                <div class="forbidden-badge">HARAM</div>
+                <div class="l-header">
+                    <div class="l-icon">🚫</div>
+                    <h3>Puasa pada 1 Syawal</h3>
+                </div>
+                <p>Haram berpuasa pada hari pertama Syawal (Aidilfitri). Ini adalah hari kegembiraan yang Allah larang kita berpuasa padanya.</p>
+            </div>
+            <div class="larang-card">
+                <div class="forbidden-badge">DILARANG</div>
+                <div class="l-header">
+                    <div class="l-icon">🍻</div>
+                    <h3>Minum Arak & Kemaksiatan</h3>
+                </div>
+                <p>Pesta yang melibatkan minuman keras, pergaulan bebas, dan maksiat adalah haram — tiada pengecualian walaupun di musim perayaan.</p>
+            </div>
+            <div class="larang-card">
+                <div class="forbidden-badge">DITEGAH</div>
+                <div class="l-header">
+                    <div class="l-icon">🗣️</div>
+                    <h3>Mengumpat & Berbohong</h3>
+                </div>
+                <p>Majlis silaturrahim tidak harus diwarnai dengan mengumpat, memfitnah, atau menyebarkan berita bohong tentang orang lain.</p>
+            </div>
+            <div class="larang-card">
+                <div class="forbidden-badge">DITEGAH</div>
+                <div class="l-header">
+                    <div class="l-icon">🛋️</div>
+                    <h3>Melalaikan Solat Fardhu</h3>
+                </div>
+                <p>Sibuk beraya bukan alasan untuk meninggalkan atau melambatkan solat fardhu. Solat tetap wajib walaupun di tengah keseronokan Raya.</p>
+            </div>
+            <div class="larang-card">
+                <div class="forbidden-badge">DITEGAH</div>
+                <div class="l-header">
+                    <div class="l-icon">💳</div>
+                    <h3>Boros & Membazir</h3>
+                </div>
+                <p>Berbelanja melebihi kemampuan, membeli tanpa keperluan, dan membazir makanan adalah perbuatan yang dibenci Allah. "Sesungguhnya pembazir adalah saudara syaitan."</p>
+            </div>
+            <div class="larang-card">
+                <div class="forbidden-badge">DITEGAH</div>
+                <div class="l-header">
+                    <div class="l-icon">💔</div>
+                    <h3>Memutuskan Silaturrahim</h3>
+                </div>
+                <p>Bulan Syawal adalah masa untuk berbaik-baik, bukan untuk memanjangkan dendam atau enggan bermaaf-maafan dengan ahli keluarga dan sahabat handai.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        ✦ &nbsp; Selamat Hari Raya Aidilfitri &nbsp; ✦ &nbsp; <span>Wan Advertising</span> &nbsp; ✦
     </div>
 
     <script>
-        // Fungsi untuk pusing kad
         function flipCard() {
-            const card = document.getElementById('rayaCard');
-            card.classList.toggle('is-flipped');
+            document.getElementById('rayaCard').classList.toggle('is-flipped');
         }
 
-        // Fungsi menjana bintang secara rawak di latar belakang
+        function scrollToInfo() {
+            document.getElementById('infoSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
         function createStars() {
             const container = document.getElementById('starContainer');
-            const starCount = 50; // Jumlah bintang
-
-            for (let i = 0; i < starCount; i++) {
+            for (let i = 0; i < 60; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
-                
-                // Saiz rawak
                 const size = Math.random() * 3 + 1;
-                star.style.width = size + 'px';
+                star.style.width  = size + 'px';
                 star.style.height = size + 'px';
-                
-                // Kedudukan rawak
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                
-                // Kelajuan kelipan rawak
+                star.style.left   = Math.random() * 100 + '%';
+                star.style.top    = Math.random() * 100 + '%';
                 star.style.animationDuration = (Math.random() * 3 + 1) + 's';
-                star.style.animationDelay = (Math.random() * 2) + 's';
-                
+                star.style.animationDelay    = (Math.random() * 2) + 's';
                 container.appendChild(star);
             }
         }
 
-        // Jalankan fungsi bintang bila halaman dimuat
         window.onload = createStars;
     </script>
 
